@@ -1,6 +1,7 @@
 package com.st.spring.context;
 
 import com.st.spring.beans.base.Teacher;
+import com.st.spring.beans.mvc.TextController;
 import com.st.spring.beans.tx.User;
 import com.st.spring.beans.tx.manager.UserManager;
 import com.st.spring.beans.tx.mapper.UserMapper;
@@ -45,11 +46,32 @@ public class ContextTest {
 
     @Test
     public void testTx() {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+
+        context.scan(User.class.getPackage().getName());
+
+        context.refresh();
 
         UserManager manager = context.getBean(UserManager.class);
 
         System.out.println(manager.selectOne(1));
+
+
+        System.out.println(manager.selectOneTx(1));
+
+    }
+
+    @Test
+    public void testMvc() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+
+        context.scan(TextController.class.getPackage().getName());
+
+        context.refresh();
+
+        TextController controller = context.getBean(TextController.class);
+
+        System.out.println(controller);
 
 
     }
